@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel de Asistencia – Voces del Carbón</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Favicon con el logo de Voces del Carbón -->
+  <link rel="icon" href="logo-vdc.png" type="image/png" />
+
+  <!-- Estilos -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-left">
+      <a href="#" class="logo-link" id="homeLink">
+        <img src="logo-vdc.png" alt="Voces del Carbón" class="logo-img" />
+        <div class="title-block">
+          <h1>Voces del Carbón</h1>
+          <p>Panel de Asistencia – Conversatorio 5 de diciembre 2025</p>
+        </div>
+      </a>
+    </div>
+    <div class="header-right">
+      <div class="role-row">
+        <label for="roleSelector">Rol:</label>
+        <select id="roleSelector" class="role-select">
+          <option value="dashboard">Dashboard</option>
+          <option value="asistencia">Asistencia</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <span id="currentPath" class="badge-path"></span>
+      <span id="lastUpdate" class="last-update">Actualizando...</span>
+    </div>
+  </header>
+
+  <nav class="main-nav">
+    <button id="navDashboard" class="nav-btn active" data-section="dashboard">📊 Resumen</button>
+    <button id="navPreguntas" class="nav-btn" data-section="preguntas">❓ Preguntas</button>
+    <button id="navDuplicados" class="nav-btn" data-section="duplicados">🔁 Duplicados</button>
+    <button id="navDescargas" class="nav-btn" data-section="descargas">📥 Descargas</button>
+    <button id="navAsistencia" class="nav-btn" data-section="asistencia">🟢 Asistencia en vivo</button>
+  </nav>
+
+  <main class="app-main">
+
+    <!-- DASHBOARD -->
+    <section id="section-dashboard" class="section active">
+      <section class="kpi-grid">
+        <article class="kpi-card">
+          <h2>Registros totales</h2>
+          <p id="kpiTotal" class="kpi-number">–</p>
+          <p class="kpi-caption">De 300 cupos disponibles</p>
+        </article>
+        <article class="kpi-card">
+          <h2>Cupos disponibles</h2>
+          <p id="kpiDisponibles" class="kpi-number">–</p>
+          <p class="kpi-caption">Capacidad máxima 300</p>
+        </article>
+        <article class="kpi-card">
+          <h2>Con vínculo minero</h2>
+          <p id="kpiVinculo" class="kpi-number">–</p>
+          <p class="kpi-caption">Directo + indirecto</p>
+        </article>
+        <article class="kpi-card">
+          <h2>Preguntas recibidas</h2>
+          <p id="kpiPreguntas" class="kpi-number">–</p>
+          <p class="kpi-caption">Para los panelistas</p>
+        </article>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel">
+          <h3>Distribución según relación con el sector minero</h3>
+          <canvas id="chartRelacion"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Registros por día</h3>
+          <canvas id="chartPorDia"></canvas>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Pre-registro vs día del evento</h3>
+        <canvas id="chartPreVsEvento"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h3>Listado de registros (sin duplicados)</h3>
+          <input
+            type="search"
+            id="searchMain"
+            class="search-input"
+            placeholder="Buscar por nombre..."
+          />
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <!-- cabecera dinámica según el rol -->
+              <tr id="theadMainRow"></tr>
+            </thead>
+            <tbody id="tbodyMain"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- PREGUNTAS -->
+    <section id="section-preguntas" class="section">
+      <section class="panel">
+        <div class="panel-header">
+          <h3>Preguntas para los panelistas</h3>
+          <input
+            type="search"
+            id="searchPreguntas"
+            class="search-input"
+            placeholder="Buscar por nombre, palabra clave, etc..."
+          />
+        </div>
+        <div class="panel-body">
+          <p class="texto-ayuda">
+            Aquí se muestran únicamente los registros que incluyeron una pregunta
+            para los panelistas. El campo <strong>“Resumen de la pregunta (síntesis)”</strong>
+            se diligencia manualmente en la hoja de cálculo.
+          </p>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Relación con el sector</th>
+                <th>Resumen</th>
+                <th>Pregunta original</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyPreguntas"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- DUPLICADOS -->
+    <section id="section-duplicados" class="section">
+      <section class="panel">
+        <div class="panel-header">
+          <h3>Duplicados detectados</h3>
+        </div>
+        <div class="panel-body">
+          <p class="texto-ayuda">
+            Estos registros tienen el mismo teléfono y/o correo. No se cuentan
+            en los totales ni en la tabla principal. Se conserva el registro más reciente.
+          </p>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Cantidad de registros</th>
+                <th>Fechas registradas</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyDuplicados"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <!-- DESCARGAS -->
+    <section id="section-descargas" class="section">
+      <section class="panel">
+        <div class="panel-header">
+          <h3>Descargas de reportes y planillas</h3>
+        </div>
+        <div class="panel-body">
+          <p class="texto-ayuda">
+            Todos los archivos usan el estilo de Voces del Carbón y están pensados
+            para control interno del evento.
+          </p>
+          <div class="download-grid">
+            <button class="btn-primary" id="btnExcelListado">
+              📘 Listado actual (Excel/CSV)
+            </button>
+            <button class="btn-primary" id="btnPdfLista">
+              📄 Lista completa para imprimir (PDF)
+            </button>
+            <button class="btn-secondary" id="btnPdfAsistentes">
+              📄 Lista SOLO asistentes (PDF)
+            </button>
+            <button class="btn-secondary" id="btnPdfPreguntas">
+              📄 Preguntas (PDF)
+            </button>
+            <button class="btn-primary" id="btnPdfPlanillaVacia">
+              📄 Planilla vacía (PDF)
+            </button>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ASISTENCIA EN VIVO -->
+    <section id="section-asistencia" class="section">
+      <section class="kpi-grid">
+        <article class="kpi-card">
+          <h2>Presentes</h2>
+          <p id="kpiPresentes" class="kpi-number">0</p>
+          <p class="kpi-caption">Personas que ya ingresaron</p>
+        </article>
+        <article class="kpi-card">
+          <h2>Desde preregistro</h2>
+          <p id="kpiPresentesPrereg" class="kpi-number">0</p>
+          <p class="kpi-caption">Ya estaban inscritos antes</p>
+        </article>
+        <article class="kpi-card">
+          <h2>Nuevos sin preregistro</h2>
+          <p id="kpiPresentesNuevos" class="kpi-number">0</p>
+          <p class="kpi-caption">Se registran en la entrada</p>
+        </article>
+        <article class="kpi-card">
+          <h2>Último ingreso</h2>
+          <p id="kpiUltimoIngreso" class="kpi-number kpi-small">–</p>
+          <p class="kpi-caption">Hora de llegada</p>
+        </article>
+      </section>
+
+      <section class="grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <h3>Registrar ingreso</h3>
+          </div>
+          <div class="panel-body">
+            <p class="texto-ayuda">
+              Escanee el código QR o escriba el número de teléfono / correo / nombre
+              del participante. Si ya estaba en el preregistro, el sistema cargará sus
+              datos. Si no, complete los campos y se registrará como nuevo asistente.
+            </p>
+          </div>
+
+          <form id="formAsistencia" class="form-asistencia">
+            <label class="field-label">
+              Identificador (teléfono, correo o nombre)
+              <input type="text" id="asistIdentificador" required />
+            </label>
+
+            <label class="field-label">
+              Nombre completo
+              <input type="text" id="asistNombre" />
+            </label>
+
+            <label class="field-label">
+              Departamento
+              <select id="asistDepto" required></select>
+            </label>
+
+            <label class="field-label">
+              Municipio / corregimiento
+              <select id="asistMunicipio" required></select>
+            </label>
+
+            <label class="field-label">
+              <span>
+                <input type="checkbox" id="asistCorregimiento" />
+                ¿Viene de corregimiento / vereda?
+              </span>
+            </label>
+
+            <label class="field-label" id="labelCorregNombre" style="display:none;">
+              Nombre del corregimiento / vereda
+              <input type="text" id="asistCorregNombre" />
+            </label>
+
+            <label class="field-label">
+              Relación con el sector minero
+              <select id="asistRelacion">
+                <option value="">Seleccione una opción</option>
+                <option value="Sí, trabajo directamente en el sector">
+                  Sí, trabajo directamente en el sector
+                </option>
+                <option value="No">No</option>
+                <option value="De manera indirecta (familiar, comercio, transporte, servicios, etc.)">
+                  De manera indirecta (familiar, comercio, transporte, servicios, etc.)
+                </option>
+              </select>
+            </label>
+
+            <div class="form-asistencia-row">
+              <label class="field-label small">
+                Teléfono / WhatsApp
+                <input type="text" id="asistTelefono" />
+              </label>
+              <label class="field-label small">
+                Correo electrónico
+                <input type="email" id="asistCorreo" />
+              </label>
+            </div>
+
+            <p id="asistMensaje" class="texto-ayuda"></p>
+
+            <div class="form-asistencia-actions">
+              <button type="button" class="btn-secondary" id="btnAsistLimpiar">
+                Limpiar
+              </button>
+              <button type="submit" class="btn-primary">
+                ✅ Registrar ingreso
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel">
+          <h3>Mapa de asistentes por municipio (ingresos)</h3>
+          <div id="mapAsistencia" class="map-container"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h3>Asistentes por municipio</h3>
+        <canvas id="chartMunicipios"></canvas>
+      </section>
+
+      <section class="panel">
+        <div class="panel-header">
+          <h3>Últimos ingresos registrados</h3>
+          <input
+            type="search"
+            id="searchAsistencia"
+            class="search-input"
+            placeholder="Filtrar por nombre, municipio, relación..."
+          />
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Hora ingreso</th>
+                <th>Nombre</th>
+                <th>Municipio</th>
+                <th>Relación con el sector</th>
+                <th>Origen</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyAsistencia"></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+  </main>
+
+  <!-- LOGIN BONITO -->
+  <div id="loginOverlay" class="login-overlay hidden">
+    <div class="login-card">
+      <img src="logo-vdc.png" alt="Voces del Carbón" class="login-logo" />
+      <h2 id="loginTitle">Acceso restringido</h2>
+      <p id="loginSubtitle">
+        Ingresa la clave para continuar.
+      </p>
+      <input
+        type="password"
+        id="loginPassword"
+        class="login-input"
+        placeholder="Clave de acceso"
+      />
+      <p id="loginError" class="login-error"></p>
+      <div class="login-actions">
+        <button id="loginCancel" class="btn-secondary">Cancelar</button>
+        <button id="loginSubmit" class="btn-primary">Ingresar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.1/jspdf.plugin.autotable.min.js"></script>
+
+  <!-- Leaflet para mapa -->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin=""
+  />
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin=""
+  ></script>
+
+  <!-- Lógica -->
+  <script src="script.js"></script>
+</body>
+</html>
