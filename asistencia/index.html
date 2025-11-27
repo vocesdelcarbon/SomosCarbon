@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Registro de ingreso – Voces del Carbón</title>
+
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="logo_vdc.png">
+<link rel="shortcut icon" type="image/png" href="logo_vdc.png">
+
+<style>
+/* ===== DISEÑO GENERAL ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 20px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #eef4ee;
+  color: #222;
+}
+
+.container {
+  max-width: 520px;
+  margin: auto;
+  padding: 25px 22px 30px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* LOGO */
+.logo {
+  display: block;
+  width: 150px;
+  margin: 5px auto 10px;
+  animation: pulseLogo 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseLogo {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 0 rgba(0,0,0,0.2));
+  }
+  50% {
+    transform: scale(1.04);
+    filter: drop-shadow(0 0 6px rgba(0,128,0,0.35));
+  }
+}
+
+h1 {
+  font-size: 22px;
+  text-align: center;
+  margin: 8px 0 18px;
+}
+
+/* Mensajes */
+#msgBox {
+  margin-bottom: 10px;
+}
+.msg {
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  display: none;
+}
+.msg-error {
+  background: #ffe3e3;
+  color: #8a1a1a;
+  border: 1px solid #f2b3b3;
+}
+.msg-success {
+  background: #e6f7ea;
+  color: #135525;
+  border: 1px solid #a6e0b4;
+}
+.msg-info {
+  background: #e6f0ff;
+  color: #12315b;
+  border: 1px solid #b8c8ff;
+}
+
+/* Inputs */
+label {
+  font-size: 14px;
+  font-weight: 600;
+  display: block;
+  margin-top: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 11px 12px;
+  margin-top: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #c3c7c3;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #0a8230;
+  box-shadow: 0 0 0 2px rgba(10,130,48,0.16);
+}
+
+/* Botones */
+.btn {
+  width: 100%;
+  padding: 13px;
+  border-radius: 999px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s;
+}
+
+.btn-primary {
+  background: #0a8230;
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(6, 94, 32, 0.4);
+}
+.btn-primary:hover {
+  background: #086b27;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(6, 94, 32, 0.45);
+}
+.btn-secondary {
+  background: #f0f1f0;
+  color: #333;
+  box-shadow: none;
+}
+.btn-secondary:hover {
+  background: #e3e4e3;
+}
+
+/* Bloques */
+.hidden {
+  display: none !important;
+}
+
+h3 {
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+.subtext {
+  font-size: 13px;
+  color: #555;
+  margin: 4px 0 10px;
+}
+
+/* Botón tipo link */
+.link-toggle {
+  background: transparent;
+  border: none;
+  color: #0a8230;
+  font-size: 14px;
+  padding: 0;
+  margin: 5px 0 5px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Certificado (modal) */
+#certificado {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 50;
+  align-items: center;
+  justify-content: center;
+}
+
+.cert-card {
+  background: #fff;
+  padding: 30px 20px;
+  border-radius: 18px;
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}
+
+.cert-card img {
+  width: 110px;
+}
+.cert-card h2 {
+  margin: 10px 0 15px;
+}
+.cert-name {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 8px 0 10px;
+  color: #0a8230;
+}
+.cert-id {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+/* --- Certificado institucional mejorado --- */
+.modern-cert {
+  padding: 35px 28px 28px;
+  border-radius: 20px;
+  background: linear-gradient(to bottom, #ffffff 10%, #f9faf9 100%);
+  border: 1px solid #dfe7df;
+}
+
+.cert-header {
+  width: 100%;
+  height: 12px;
+  background: #0a8230;
+  border-radius: 8px 8px 0 0;
+  margin-top: -20px;
+  margin-bottom: 15px;
+}
+
+.cert-logo {
+  width: 120px;
+  margin-bottom: 4px;
+}
+
+.cert-text {
+  font-size: 16px;
+  margin: 4px 0;
+  color: #444;
+}
+
+.cert-title-main {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 10px 0 4px;
+}
+
+.cert-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 6px 0 10px;
+  color: #0a8230;
+}
+
+.cert-title-highlight {
+  color: #c62828; /* TRAICIÓN en rojo */
+}
+
+.cert-subtitle {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 14px;
+}
+
+.cert-event {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.cert-phrase {
+  font-size: 14px;
+  font-style: italic;
+  color: #555;
+  margin-top: 16px;
+}
+
+/* OVERLAY CARGA */
+#loadingOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+}
+
+.loading-box {
+  background: #ffffff;
+  padding: 22px 26px 20px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+}
+
+.loading-logo {
+  width: 70px;
+  margin-bottom: 10px;
+}
+
+.loading-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 4px solid #e0e0e0;
+  border-top-color: #0a8230;
+  margin: 0 auto 8px;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#loadingText {
+  font-size: 14px;
+  color: #333;
+}
+
+/* CONFETI */
+.confetti-piece {
+  position: fixed;
+  width: 8px;
+  height: 14px;
+  top: -20px;
+  border-radius: 2px;
+  opacity: 0.9;
+  z-index: 40;
+  animation: confetti-fall 1.9s linear forwards;
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotateZ(0deg);
+  }
+  100% {
+    transform: translateY(110vh) rotateZ(360deg);
+  }
+}
+
+/* Responsivo */
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 15px 25px;
+  }
+  h1 {
+    font-size: 20px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <img src="logo_vdc.png" class="logo" alt="Voces del Carbón">
+
+  <h1>Registro de ingreso</h1>
+
+  <div id="msgBox">
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <!-- BLOQUE 1: BUSCAR -->
+  <div id="buscarBloque">
+    <label>Número de teléfono o correo electrónico</label>
+    <input type="text" id="identificador" placeholder="Ej: 3001234567 o correo@ejemplo.com">
+    <button class="btn btn-primary" onclick="buscar()">Buscar mis datos</button>
+  </div>
+
+  <!-- BLOQUE 2: EXISTENTE -->
+  <div id="existenteBloque" class="hidden">
+    <h3>Confirmemos tus datos</h3>
+    <p class="subtext">
+      Ya estás registrado en nuestra base. Confirma desde dónde nos acompañas
+      (departamento y municipio) y luego presiona “Registrar mi asistencia”.
+    </p>
+
+    <label>Nombre completo</label>
+    <input id="exNombre" readonly>
+
+    <label>Teléfono</label>
+    <input id="exTel" readonly>
+
+    <label>Correo electrónico</label>
+    <input id="exCorreo" readonly>
+
+    <!-- Solo piden de dónde viene -->
+    <label>Departamento</label>
+    <select id="exDepto"></select>
+
+    <label>Municipio</label>
+    <select id="exMuni"></select>
+
+    <label style="margin-top:6px;">
+      <input type="checkbox" id="exCorrChk" onchange="toggleCorr('exCorr')">
+      ¿Viene de vereda / corregimiento?
+    </label>
+    <input id="exCorr" class="hidden" placeholder="Nombre de la vereda o corregimiento">
+
+    <button class="btn btn-primary" style="margin-top:12px;" onclick="registrarExistente()">
+      Registrar mi asistencia
+    </button>
+
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="reiniciar()">
+      Buscar otra persona
+    </button>
+  </div>
+
+  <!-- BLOQUE 3: NUEVO -->
+  <div id="nuevoBloque" class="hidden">
+    <h3>Registro por primera vez</h3>
+    <p class="subtext" id="nuevoTexto">
+      No encontramos tu registro. Puedes buscar otra vez o registrarte aquí mismo.
+    </p>
+
+    <label>Nombre completo</label>
+    <input id="nNombre">
+
+    <label>Teléfono / WhatsApp</label>
+    <input id="nTel">
+
+    <label>Correo electrónico (opcional)</label>
+    <input id="nCorreo">
+
+    <button type="button" class="link-toggle" onclick="toggleRelacion('nRelacionBox')">
+      ¿Quieres indicar tu relación con el sector minero?
+    </button>
+    <div id="nRelacionBox" class="hidden">
+      <label>Relación con el sector minero</label>
+      <select id="nRelacion">
+        <option value="">(No deseo responder)</option>
+        <option>Sí, trabajo directamente en el sector</option>
+        <option>De manera indirecta (familiar, comercio, transporte, etc.)</option>
+        <option>No</option>
+      </select>
+    </div>
+
+    <label>Departamento</label>
+    <select id="nDepto"></select>
+
+    <label>Municipio</label>
+    <select id="nMuni"></select>
+
+    <label style="margin-top:6px;">
+      <input type="checkbox" id="nCorrChk" onchange="toggleCorr('nCorr')">
+      ¿Viene de vereda / corregimiento?
+    </label>
+    <input id="nCorr" class="hidden" placeholder="Nombre de la vereda o corregimiento">
+
+    <button class="btn btn-primary" style="margin-top:12px;" onclick="registrarNuevo()">
+      Registrar mi asistencia
+    </button>
+
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="reiniciar()">
+      Volver al inicio
+    </button>
+  </div>
+
+  <!-- BLOQUE 4: CONFIRMACIÓN -->
+  <div id="okBloque" class="hidden">
+    <h3 id="okMsg"></h3>
+    <button class="btn btn-primary" onclick="mostrarCertificado()">
+      Ver certificado de asistencia
+    </button>
+    <button class="btn btn-secondary" style="margin-top:8px;" onclick="reiniciar()">
+      Registrar otra persona
+    </button>
+  </div>
+
+</div>
+
+
+<!-- CERTIFICADO -->
+<div id="certificado">
+  <div class="cert-card modern-cert">
+    <div class="cert-header"></div>
+
+    <img src="logo_vdc.png" class="cert-logo" alt="Voces del Carbón">
+    <p class="cert-title-main">CONVERSATORIO</p>
+    <p class="cert-title">
+      “¿Transición o <span class="cert-title-highlight">TRAICIÓN</span> energética?”
+    </p>
+    <p class="cert-subtitle">
+      Del carbón al futuro: avanzar sin traicionar lo que somos.
+    </p>
+
+    <h2>Certificado de asistencia</h2>
+
+    <p class="cert-text">Voces del Carbón certifica que</p>
+    <p id="certNombre" class="cert-name"></p>
+    <p class="cert-text">Asistió al conversatorio realizado el 5 de diciembre de 2025 en Valledupar, Cesar.</p>
+
+    <p class="cert-phrase">
+      Gracias por ser parte de la voz que defiende el trabajo, la dignidad y el futuro de nuestras comunidades mineras.
+    </p>
+
+    <p id="certID" class="cert-id"></p>
+
+    <button class="btn btn-primary" style="margin-top:16px;" onclick="descargarPDF()">
+      Descargar certificado (PDF)
+    </button>
+
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="compartirCertificado()">
+      Compartir
+    </button>
+
+    <button class="btn btn-secondary" style="margin-top:10px;" onclick="cerrarCertificado()">
+      Cerrar
+    </button>
+  </div>
+</div>
+
+<!-- OVERLAY DE CARGA -->
+<div id="loadingOverlay">
+  <div class="loading-box">
+    <img src="logo_vdc.png" alt="Voces del Carbón" class="loading-logo">
+    <div class="loading-spinner"></div>
+    <p id="loadingText">Procesando…</p>
+  </div>
+</div>
+
+<!-- jsPDF solo texto -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<!-- html2canvas para el pantallazo del certificado -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+// 👉 URL de tu WebApp de Apps Script (la misma del panel)
+const API = "https://script.google.com/macros/s/AKfycbwdyMdqTiFadL1AOdec1JNZK8EsWi1888GDhKNdGduABnnQkT3_iwMfQfa6-lxHEG869g/exec";
+
+/* ===== DEPARTAMENTOS Y MUNICIPIOS ===== */
+const colombia = {
+  "Amazonas": ["Leticia", "Puerto Nariño", "Otro municipio / corregimiento"],
+  "Antioquia": ["Medellín", "Bello", "Envigado", "Itagüí", "Rionegro", "Apartadó", "Turbo", "Yarumal", "Caucasia", "Otro municipio / corregimiento"],
+  "Arauca": ["Arauca", "Arauquita", "Saravena", "Tame", "Otro municipio / corregimiento"],
+  "Atlántico": ["Barranquilla", "Soledad", "Malambo", "Sabanalarga", "Santo Tomás", "Puerto Colombia", "Otro municipio / corregimiento"],
+  "Bogotá D.C.": ["Bogotá D.C.", "Otro municipio / corregimiento"],
+  "Bolívar": ["Cartagena de Indias", "Magangué", "Turbaco", "Arjona", "El Carmen de Bolívar", "Otro municipio / corregimiento"],
+  "Boyacá": ["Tunja", "Duitama", "Sogamoso", "Chiquinquirá", "Samacá", "Otro municipio / corregimiento"],
+  "Caldas": ["Manizales", "Villamaría", "Chinchiná", "La Dorada", "Otro municipio / corregimiento"],
+  "Caquetá": ["Florencia", "San Vicente del Caguán", "Otro municipio / corregimiento"],
+  "Casanare": ["Yopal", "Aguazul", "Villanueva", "Otro municipio / corregimiento"],
+  "Cauca": ["Popayán", "Santander de Quilichao", "Otro municipio / corregimiento"],
+  "Cesar": [
+    "Valledupar","La Jagua de Ibirico","El Paso","Aguachica","Chiriguaná","Curumaní",
+    "Pueblo Bello","Manaure Balcón del Cesar","Agustín Codazzi","Bosconia","Becerril",
+    "San Diego","La Paz","Chimichagua","Pelaya","San Alberto","San Martín","Gamarra",
+    "Otro municipio / corregimiento"
+  ],
+  "Chocó": ["Quibdó", "Istmina", "Otro municipio / corregimiento"],
+  "Córdoba": ["Montería", "Cereté", "Sahagún", "Lorica", "Otro municipio / corregimiento"],
+  "Cundinamarca": ["Soacha", "Zipaquirá", "Chía", "Facatativá", "Girardot", "Funza", "Mosquera", "Otro municipio / corregimiento"],
+  "Guainía": ["Inírida", "Otro municipio / corregimiento"],
+  "Guaviare": ["San José del Guaviare", "Otro municipio / corregimiento"],
+  "Huila": ["Neiva", "Pitalito", "Garzón", "Otro municipio / corregimiento"],
+  "La Guajira": [
+    "Riohacha","Maicao","Fonseca","Barrancas","Hatonuevo","Uribia","Albania","Dibulla",
+    "Otro municipio / corregimiento"
+  ],
+  "Magdalena": ["Santa Marta", "Ciénaga", "Fundación", "Aracataca", "El Banco", "Otro municipio / corregimiento"],
+  "Meta": ["Villavicencio", "Acacías", "Granada", "Otro municipio / corregimiento"],
+  "Nariño": ["Pasto", "Tumaco", "Ipiales", "Otro municipio / corregimiento"],
+  "Norte de Santander": ["Cúcuta", "Ocaña", "Pamplona", "Otro municipio / corregimiento"],
+  "Putumayo": ["Mocoa", "Puerto Asís", "Otro municipio / corregimiento"],
+  "Quindío": ["Armenia", "Calarcá", "Montenegro", "Otro municipio / corregimiento"],
+  "Risaralda": ["Pereira", "Dosquebradas", "Santa Rosa de Cabal", "Otro municipio / corregimiento"],
+  "San Andrés y Providencia": ["San Andrés", "Providencia", "Otro municipio / corregimiento"],
+  "Santander": ["Bucaramanga", "Floridablanca", "Girón", "Piedecuesta", "Barrancabermeja", "San Gil", "Otro municipio / corregimiento"],
+  "Sucre": ["Sincelejo", "Corozal", "Sampués", "Otro municipio / corregimiento"],
+  "Tolima": ["Ibagué", "Espinal", "Honda", "Melgar", "Otro municipio / corregimiento"],
+  "Valle del Cauca": ["Cali", "Palmira", "Yumbo", "Tuluá", "Buga", "Buenaventura", "Otro municipio / corregimiento"],
+  "Vaupés": ["Mitú", "Otro municipio / corregimiento"],
+  "Vichada": ["Puerto Carreño", "Otro municipio / corregimiento"]
+};
+
+function cargarDeptos(selectId) {
+  const sel = document.getElementById(selectId);
+  sel.innerHTML = "";
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Selecciona un departamento";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  sel.appendChild(placeholder);
+
+  Object.keys(colombia).forEach(d => {
+    const opt = document.createElement("option");
+    opt.value = d;
+    opt.textContent = d;
+    sel.appendChild(opt);
+  });
+}
+
+function cargarMunicipios(selectDepto, selectMuni) {
+  const depto = document.getElementById(selectDepto).value;
+  const muniSel = document.getElementById(selectMuni);
+  muniSel.innerHTML = "";
+
+  const placeholder = document.createElement("option");
+  placeholder.value = "";
+  placeholder.textContent = "Selecciona un municipio";
+  placeholder.disabled = true;
+  placeholder.selected = true;
+  muniSel.appendChild(placeholder);
+
+  if (!depto || !colombia[depto]) return;
+
+  colombia[depto].forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = m;
+    muniSel.appendChild(opt);
+  });
+}
+
+/* === helper para que TODOS los campos quiten el mensaje al corregir === */
+function attachClearMsgListeners(ids) {
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("input", clearMsg);
+    el.addEventListener("change", clearMsg);
+  });
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Cargar selects de departamentos
+  cargarDeptos("exDepto");
+  cargarDeptos("nDepto");
+
+  // Municipios iniciales (quedan en "Selecciona un municipio")
+  cargarMunicipios("exDepto", "exMuni");
+  cargarMunicipios("nDepto", "nMuni");
+
+  document.getElementById("exDepto").addEventListener("change", () => {
+    cargarMunicipios("exDepto", "exMuni");
+  });
+  document.getElementById("nDepto").addEventListener("change", () => {
+    cargarMunicipios("nDepto", "nMuni");
+  });
+
+  // Campos que, al modificarse, deben ocultar cualquier mensaje (error / info / éxito)
+  attachClearMsgListeners([
+    "identificador",      // búsqueda inicial
+    "exDepto","exMuni","exCorr","exCorrChk", // asistentes ya registrados
+    "nNombre","nTel","nCorreo","nDepto","nMuni","nCorr","nRelacion" // nuevo registro
+  ]);
+});
+
+/* ===== OVERLAY CARGA ===== */
+function showLoading(text) {
+  const overlay = document.getElementById("loadingOverlay");
+  const lbl = document.getElementById("loadingText");
+  if (lbl && text) lbl.textContent = text;
+  overlay.style.display = "flex";
+}
+
+function hideLoading() {
+  const overlay = document.getElementById("loadingOverlay");
+  overlay.style.display = "none";
+}
+
+/* ===== MENSAJES BONITOS ===== */
+function showMsg(text, type = "error") {
+  const box = document.getElementById("msg");
+  box.textContent = text;
+
+  let cls = "msg msg-error";
+  if (type === "success") cls = "msg msg-success";
+  else if (type === "info") cls = "msg msg-info";
+
+  box.className = cls;
+  box.style.display = "block";
+}
+
+function clearMsg() {
+  const box = document.getElementById("msg");
+  box.style.display = "none";
+}
+
+/* ===== VALIDACIONES ===== */
+function validarTelefono(t) {
+  return /^[0-9]{10}$/.test(t);
+}
+
+function validarCorreo(c) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c);
+}
+
+/* ===== LÓGICA BUSCAR ===== */
+let filaSeleccionada = null;
+let nombreActual = "";
+
+function buscar() {
+  clearMsg();
+  const campo = document.getElementById("identificador");
+  const q = campo.value.trim();
+  if (!q) {
+    showMsg("Por favor, escribe tu número de teléfono o correo para continuar.");
+    campo.focus();
+    return;
+  }
+
+  showLoading("Buscando tus datos…");
+
+  fetch(API, {
+    method: "POST",
+    body: new URLSearchParams({
+      action: "buscarIdentificador",
+      q
+    })
+  })
+  .then(r => r.json())
+  .then(res => {
+    hideLoading();
+    if (res.found) {
+      mostrarExistente(res.data);
+    } else {
+      showMsg("No encontramos tu registro. Puedes buscar otra vez o registrarte aquí mismo.", "info");
+      mostrarNuevo(q);
+    }
+  })
+  .catch(() => {
+    hideLoading();
+    showMsg("No se pudo conectar. Intenta de nuevo en unos segundos.");
+  });
+}
+
+/* ===== EXISTENTE ===== */
+function mostrarExistente(d) {
+  document.getElementById("buscarBloque").classList.add("hidden");
+  document.getElementById("existenteBloque").classList.remove("hidden");
+
+  filaSeleccionada = d.index;
+  nombreActual = d.nombre || "";
+
+  document.getElementById("exNombre").value = d.nombre || "";
+  document.getElementById("exTel").value    = d.telefono || "";
+  document.getElementById("exCorreo").value = d.correo || "";
+
+  // Reset depto/muni (el usuario debe confirmar siempre)
+  document.getElementById("exDepto").value = "";
+  cargarMunicipios("exDepto", "exMuni");
+
+  document.getElementById("exCorrChk").checked = false;
+  document.getElementById("exCorr").classList.add("hidden");
+  document.getElementById("exCorr").value = "";
+}
+
+function registrarExistente() {
+  clearMsg();
+  const depto = exDepto.value;
+  const muni  = exMuni.value;
+  const corr  = exCorrChk.checked ? exCorr.value.trim() : "";
+
+  if (!depto || !muni) {
+    showMsg("Por favor, selecciona el departamento y el municipio.", "error");
+    return;
+  }
+  if (exCorrChk.checked && !corr) {
+    showMsg("Escribe el nombre de la vereda/corregimiento.", "error");
+    return;
+  }
+
+  showLoading("Registrando tu asistencia…");
+
+  fetch(API, {
+    method: "POST",
+    body: new URLSearchParams({
+      action: "registrarIngresoExistente",
+      index: filaSeleccionada,
+      depto,
+      muni,
+      corr
+    })
+  })
+  .then(r => r.json())
+  .then(res => {
+    hideLoading();
+    if (res.ok) {
+      mostrarOk(res.id, nombreActual);
+    } else {
+      showMsg("Hubo un problema al registrar la asistencia.", "error");
+    }
+  })
+  .catch(() => {
+    hideLoading();
+    showMsg("No se pudo registrar. Intenta nuevamente.", "error");
+  });
+}
+
+/* ===== NUEVO ===== */
+function mostrarNuevo(q) {
+  document.getElementById("buscarBloque").classList.add("hidden");
+  document.getElementById("nuevoBloque").classList.remove("hidden");
+
+  // Prellenar según lo que escribió
+  if (q.includes("@")) {
+    nCorreo.value = q;
+    nTel.value = "";
+  } else {
+    nTel.value = q;
+    nCorreo.value = "";
+  }
+
+  nNombre.value = "";
+  nDepto.value = "";
+  cargarMunicipios("nDepto", "nMuni");
+
+  nCorrChk.checked = false;
+  nCorr.classList.add("hidden");
+  nCorr.value = "";
+  document.getElementById("nRelacionBox").classList.add("hidden");
+  nRelacion.value = "";
+}
+
+function registrarNuevo() {
+  clearMsg();
+  const nombre = nNombre.value.trim();
+  const tel    = nTel.value.trim();
+  const correo = nCorreo.value.trim();
+  const relacion = nRelacion.value;
+  const depto  = nDepto.value;
+  const muni   = nMuni.value;
+  const corr   = nCorrChk.checked ? nCorr.value.trim() : "";
+
+  if (!nombre || !tel || !depto || !muni) {
+    showMsg("Por favor, completa al menos nombre, teléfono, departamento y municipio.", "error");
+    return;
+  }
+  if (nCorrChk.checked && !corr) {
+    showMsg("Escribe el nombre de la vereda/corregimiento.", "error");
+    return;
+  }
+
+  if (!validarTelefono(tel)) {
+    showMsg("Por favor ingresa un número de teléfono válido (10 dígitos).", "error");
+    nTel.focus();
+    return;
+  }
+
+  if (correo && !validarCorreo(correo)) {
+    showMsg("El correo electrónico no es válido.", "error");
+    nCorreo.focus();
+    return;
+  }
+
+  showLoading("Registrando tu asistencia…");
+
+  fetch(API, {
+    method: "POST",
+    body: new URLSearchParams({
+      action: "registrarIngresoNuevo",
+      nombre,
+      tel,
+      correo,
+      relacion,
+      pregunta: "",
+      depto,
+      muni,
+      corr
+    })
+  })
+  .then(r => r.json())
+  .then(res => {
+    hideLoading();
+    if (res.ok) {
+      nombreActual = nombre;
+      mostrarOk(res.id, nombre);
+    } else {
+      showMsg("Hubo un problema al registrar la asistencia.", "error");
+    }
+  })
+  .catch(() => {
+    hideLoading();
+    showMsg("No se pudo registrar. Intenta nuevamente.", "error");
+  });
+}
+
+/* ===== CONFIRMACIÓN + CONFETI ===== */
+function mostrarOk(id, nombre) {
+  document.getElementById("existenteBloque").classList.add("hidden");
+  document.getElementById("nuevoBloque").classList.add("hidden");
+  document.getElementById("okBloque").classList.remove("hidden");
+
+  const okMsg = document.getElementById("okMsg");
+  okMsg.innerHTML = `✅ Registro exitoso<br><small>ID: <b>${id}</b></small>`;
+
+  document.getElementById("certNombre").textContent = nombre;
+  document.getElementById("certID").textContent = "ID: " + id;
+
+  clearMsg();
+  showMsg("Tu asistencia fue registrada correctamente. ¡Gracias por acompañarnos!", "success");
+  lanzarConfeti();
+}
+
+/* ===== VEREDAS / CORREGIMIENTOS ===== */
+function toggleCorr(id) {
+  const input = document.getElementById(id);
+  input.classList.toggle("hidden");
+  if (!input.classList.contains("hidden")) {
+    input.focus();
+  }
+}
+
+/* ===== RELACIÓN CON EL SECTOR ===== */
+function toggleRelacion(id) {
+  document.getElementById(id).classList.toggle("hidden");
+}
+
+/* ===== CERTIFICADO (modal) ===== */
+function mostrarCertificado() {
+  document.getElementById("certificado").style.display = "flex";
+}
+
+function cerrarCertificado() {
+  document.getElementById("certificado").style.display = "none";
+}
+
+/* ===== DESCARGAR CERTIFICADO EN PDF ===== */
+function descargarPDF() {
+  const nombre = document.getElementById("certNombre").textContent || "";
+  const idFull = document.getElementById("certID").textContent || "";
+  const idLimpio = idFull.replace("ID: ","");
+
+  showLoading("Generando tu certificado…");
+
+  const img = new Image();
+  img.src = "logo_vdc.png";
+  img.onload = function() {
+    const canvas = document.createElement("canvas");
+    canvas.width = img.width;
+    canvas.height = img.height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0);
+    const logoDataUrl = canvas.toDataURL("image/png");
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("l", "mm", "a4"); // horizontal
+    const pageWidth  = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const outerMargin = 10;
+    const certX = outerMargin;
+    const certY = outerMargin;
+    const certWidth  = pageWidth  - outerMargin * 2;
+    const certHeight = pageHeight - outerMargin * 2;
+    const centerX = pageWidth / 2;
+
+    // Fondo crema
+    pdf.setFillColor(249, 250, 248);
+    pdf.roundedRect(certX, certY, certWidth, certHeight, 5, 5, "F");
+
+    // Borde verde
+    pdf.setDrawColor(10, 130, 48);
+    pdf.setLineWidth(1.5);
+    pdf.roundedRect(certX, certY, certWidth, certHeight, 5, 5);
+
+    // Franja superior
+    pdf.setFillColor(10,130,48);
+    pdf.rect(certX, certY, certWidth, 14, "F");
+
+    // Logo centrado
+    const logoW = 28;
+    const logoH = 28;
+    const logoX = centerX - logoW / 2;
+    const logoY = certY + 8;
+    pdf.addImage(logoDataUrl, "PNG", logoX, logoY, logoW, logoH);
+
+    let y = logoY + logoH + 8;
+
+    // Nombre del movimiento
+    pdf.setTextColor(0,0,0);
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(16);
+    pdf.text("Voces del Carbón", centerX, y, { align: "center" });
+
+    // Título
+    y += 12;
+    pdf.setFontSize(22);
+    pdf.text("CERTIFICADO DE ASISTENCIA", centerX, y, { align: "center" });
+
+    // CONVERSATORIO
+    y += 16;
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(12);
+    pdf.text("CONVERSATORIO:", centerX, y, { align: "center" });
+
+    // Título del conversatorio
+    y += 9;
+    pdf.setFontSize(14);
+    const parte1 = "¿Transición o ";
+    const parte2 = "TRAICIÓN";
+    const parte3 = " energética?";
+    pdf.setFont("helvetica", "bold");
+
+    pdf.setTextColor(10,130,48);
+    const w1 = pdf.getTextWidth(parte1);
+    pdf.setTextColor(198,40,40);
+    const w2 = pdf.getTextWidth(parte2 + " ");
+    pdf.setTextColor(10,130,48);
+    const w3 = pdf.getTextWidth(parte3);
+    const totalWidth = w1 + w2 + w3;
+    let x = centerX - totalWidth / 2;
+
+    pdf.setTextColor(10,130,48);
+    pdf.text(parte1, x, y);
+    x += w1;
+    pdf.setTextColor(198,40,40);
+    pdf.text(parte2, x, y);
+    x += w2;
+    pdf.setTextColor(10,130,48);
+    pdf.text(parte3, x, y);
+
+    // Subtítulo
+    y += 7;
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(11);
+    pdf.setTextColor(0,0,0);
+    const sub = "Del carbón al futuro: avanzar sin traicionar lo que somos.";
+    pdf.text(sub, centerX, y, { align: "center" });
+
+    // Texto "certifica que"
+    y += 16;
+    pdf.setFontSize(12);
+    pdf.setFont("helvetica", "normal");
+    pdf.text("Voces del Carbón certifica que:", centerX, y, { align: "center" });
+
+    // Nombre protagonista
+    y += 12;
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(20);
+    pdf.setTextColor(10,130,48);
+    pdf.text(nombre, centerX, y, { align: "center" });
+
+    // Texto de asistencia
+    y += 12;
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(12);
+    pdf.setTextColor(0,0,0);
+    const texto2 =
+      "Asistió al conversatorio realizado el 5 de diciembre de 2025 en Valledupar, Cesar.";
+    const lineas2 = pdf.splitTextToSize(texto2, certWidth - 40);
+    pdf.text(lineas2, centerX, y, { align: "center" });
+
+    // Frase emocional
+    y += 18;
+    pdf.setFont("helvetica", "italic");
+    const frase =
+      "Gracias por ser parte de la voz que defiende el trabajo, la dignidad y el futuro de nuestras comunidades mineras.";
+    const lineasFrase = pdf.splitTextToSize(frase, certWidth - 40);
+    pdf.text(lineasFrase, centerX, y, { align: "center" });
+
+    // ID de registro
+    const idY = certY + certHeight - 15;
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(12);
+    pdf.text("ID de registro:", certX + 20, idY);
+    pdf.setFont("helvetica", "normal");
+    pdf.text(idFull, certX + 52, idY);
+
+    hideLoading();
+    pdf.save(`certificado-VDC-${idLimpio || "asistente"}.pdf`);
+  };
+
+  img.onerror = function() {
+    hideLoading();
+    alert("No se pudo cargar el logo para el certificado. Intenta nuevamente.");
+  };
+}
+
+/* ===== COMPARTIR: PANTALLAZO DEL CERTIFICADO SIN BOTONES ===== */
+function compartirCertificado() {
+  const card = document.querySelector(".cert-card");
+  if (!card) return;
+
+  const nombre = document.getElementById("certNombre").textContent || "";
+  const idFull = document.getElementById("certID").textContent || "";
+  const idLimpio = idFull.replace("ID: ","") || "asistente";
+
+  // Ocultamos solo los botones (display:none para que NO dejen espacio)
+  const botones = card.querySelectorAll(".btn");
+  const displayOriginal = [];
+  botones.forEach((b, i) => {
+    displayOriginal[i] = b.style.display;
+    b.style.display = "none";
+  });
+
+  showLoading("Preparando imagen para compartir…");
+
+  html2canvas(card, {
+    backgroundColor: null,
+    scale: 2
+  }).then(canvas => {
+    // Restaurar botones
+    botones.forEach((b, i) => {
+      b.style.display = displayOriginal[i] || "";
+    });
+
+    canvas.toBlob(async blob => {
+      hideLoading();
+      if (!blob) {
+        alert("No se pudo generar la imagen del certificado. Intenta nuevamente.");
+        return;
+      }
+
+      const file = new File(
+        [blob],
+        `certificado-VDC-${idLimpio}.png`,
+        { type: "image/png" }
+      );
+
+      const texto =
+        `Te comparto mi certificado de asistencia al conversatorio ` +
+        `“¿Transición o TRAICIÓN energética?” de Voces del Carbón.\n` +
+        `${nombre} – ${idFull}`;
+
+      // Si el dispositivo permite compartir archivos
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({
+            files: [file],
+            title: "Certificado de asistencia – Voces del Carbón",
+            text: texto
+          });
+        } catch (e) {
+          // usuario canceló
+        }
+      } else {
+        // Fallback: descarga la imagen
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `certificado-VDC-${idLimpio}.png`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        alert("Tu dispositivo no permite compartir directamente, pero la imagen del certificado ya se descargó. Puedes compartirla por WhatsApp, correo o redes desde tu galería.");
+      }
+    });
+  }).catch(() => {
+    hideLoading();
+    // Restaurar visibilidad si hay error
+    botones.forEach((b, i) => {
+      b.style.display = displayOriginal[i] || "";
+    });
+    alert("No se pudo generar la imagen del certificado. Intenta nuevamente.");
+  });
+}
+
+/* ===== REINICIAR ===== */
+function reiniciar() {
+  clearMsg();
+  document.getElementById("identificador").value = "";
+  document.getElementById("buscarBloque").classList.remove("hidden");
+  document.getElementById("existenteBloque").classList.add("hidden");
+  document.getElementById("nuevoBloque").classList.add("hidden");
+  document.getElementById("okBloque").classList.add("hidden");
+}
+
+/* ===== CONFETI ===== */
+function lanzarConfeti() {
+  const colores = ["#ffd54f","#ff7043","#4db6ac","#64b5f6","#ba68c8","#81c784"];
+  const cantidad = 60;
+
+  for (let i = 0; i < cantidad; i++) {
+    const pieza = document.createElement("div");
+    pieza.classList.add("confetti-piece");
+    pieza.style.left = Math.random() * 100 + "vw";
+    pieza.style.backgroundColor = colores[Math.floor(Math.random() * colores.length)];
+    pieza.style.animationDelay = (Math.random() * 0.7) + "s";
+    pieza.style.transform = "rotate(" + (Math.random() * 360) + "deg)";
+    document.body.appendChild(pieza);
+    setTimeout(() => pieza.remove(), 2200);
+  }
+}
+</script>
+
+</body>
+</html>
