@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>En Vivo - Voces del Carbón</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Fuentes y iconos -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root{
+      --green-main:#00853B;   /* verde institucional */
+      --green-dark:#004520;
+      --green-soft:#0A6F33;
+      --yellow-main:#FDC300; /* amarillo institucional */
+      --bg-deep:#022313;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:'Inter','Montserrat',sans-serif;
+      background:
+        radial-gradient(circle at top, #ffe680 0%, #007337 45%, #001b10 100%);
+    }
+
+    .frame{
+      width:92%;
+      max-width:1300px;
+      height:86vh;
+      padding:3rem 2.5rem 2.5rem;
+      border-radius:42px;
+      background:radial-gradient(circle at top,#4fa043 0%,#00401f 65%,#012414 100%);
+      box-shadow:
+        0 0 70px rgba(0,0,0,.7),
+        0 0 0 1px rgba(0,0,0,.5);
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      text-align:center;
+      color:#fdfdfd;
+    }
+
+    .logo{
+      width:150px;
+      margin:0 auto 0.8rem;
+      filter:drop-shadow(0 0 22px rgba(0,0,0,.7));
+      animation:logoPulse 3s infinite;
+    }
+    @keyframes logoPulse{
+      0%,100%{transform:scale(1);}
+      50%{transform:scale(1.06);}
+    }
+
+    .heading-1{
+      font-size:.95rem;
+      letter-spacing:.28em;
+      text-transform:uppercase;
+      opacity:.9;
+    }
+    .heading-2{
+      margin-top:.5rem;
+      font-size:2rem;
+      font-weight:700;
+      letter-spacing:.06em;
+      color:var(--yellow-main);
+      text-transform:uppercase;
+    }
+
+    .subtitle{
+      margin-top:.8rem;
+      font-size:.96rem;
+      max-width:800px;
+      margin-left:auto;
+      margin-right:auto;
+      opacity:.92;
+    }
+
+    .countdown-zone{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .timer-card{
+      padding:40px 80px 32px;
+      border-radius:32px;
+      background:linear-gradient(145deg,var(--green-main),var(--green-soft));
+      box-shadow:
+        0 18px 45px rgba(0,0,0,.75),
+        0 0 40px rgba(0,255,120,.35);
+      display:inline-flex;
+      flex-direction:column;
+      align-items:center;
+      min-width:60%;
+    }
+
+    .timer{
+      font-family:'Inter',sans-serif;
+      font-weight:800;
+      font-size:clamp(5.5rem,9.5vw,7.5rem);
+      letter-spacing:.18em;
+      color:#ffffff;
+      text-shadow:
+        0 0 12px rgba(0,0,0,.8),
+        0 0 30px rgba(0,0,0,.5);
+    }
+
+    .timer-label{
+      margin-top:10px;
+      font-size:.9rem;
+      opacity:.92;
+    }
+
+    .message{
+      font-size:.92rem;
+      margin-top:1rem;
+      opacity:.96;
+    }
+
+    .footer{
+      margin-top:1.2rem;
+      display:flex;
+      flex-direction:column;
+      gap:.6rem;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .footer-top{
+      font-size:.9rem;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      opacity:.9;
+    }
+
+    .social-row{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .social-icon{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#fff;
+      font-size:1.35rem;
+      box-shadow:0 0 12px rgba(0,0,0,.7);
+      transition:.25s transform, .25s box-shadow;
+    }
+    .social-icon.facebook{ background:#1877f2; }
+    .social-icon.instagram{
+      background:radial-gradient(circle at 30% 30%,#ffe082 0,#f44336 35%,#9c27b0 75%);
+    }
+    .social-icon.x{ background:#000; }
+    .social-icon.web{ background:#00897b; }
+
+    .social-icon:hover{
+      transform:scale(1.12);
+      box-shadow:0 0 18px rgba(0,0,0,.9);
+    }
+
+    .hashtags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:center;
+      margin-top:.2rem;
+    }
+
+    .tag{
+      padding:8px 18px;
+      border-radius:999px;
+      font-size:.85rem;
+      font-weight:600;
+      background:linear-gradient(135deg,#ffe082,#ffb300);
+      color:#1b1b1b;
+      box-shadow:0 4px 10px rgba(0,0,0,.45);
+    }
+
+    /* Último minuto: más emoción */
+    .last-minute .timer-card{
+      animation:heartbeat .9s infinite;
+      background:linear-gradient(145deg,#0ba360,#00ff85);
+      box-shadow:
+        0 0 45px rgba(0,255,170,.9),
+        0 18px 45px rgba(0,0,0,.85);
+    }
+    @keyframes heartbeat{
+      0%{transform:scale(1);}
+      35%{transform:scale(1.06);}
+      60%{transform:scale(0.98);}
+      100%{transform:scale(1);}
+    }
+
+    @media (max-width:900px){
+      .frame{ padding:2rem 1.5rem; }
+      .timer-card{ padding:30px 40px 26px; }
+      .heading-2{ font-size:1.7rem; }
+      .heading-1{ font-size:.85rem; }
+      .subtitle{ font-size:.88rem; }
+      .footer-top{ letter-spacing:.12em; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="frame" id="layout">
+  <!-- LOGO -->
+  <div>
+    <img src="https://vocesdelcarbon.org/assets/logo.png"
+         alt="Voces del Carbón" class="logo">
+
+    <div class="heading-1">EN VIVO · VOCES DEL CARBÓN</div>
+    <div class="heading-2">CONVERSATORIO ESPECIAL</div>
+
+    <div class="subtitle">
+      Ajusta tu audio, comparte el enlace y prepárate para el conversatorio
+      <strong>“¿Transición o traición energética?”</strong>
+    </div>
+  </div>
+
+  <!-- CONTADOR -->
+  <div class="countdown-zone">
+    <div class="timer-card">
+      <div id="timer" class="timer">05:00</div>
+      <div class="timer-label">En momentos iniciamos transmisión en vivo.</div>
+    </div>
+  </div>
+
+  <!-- MENSAJE + REDES -->
+  <div>
+    <div class="message">
+      Desde Voces del Carbón trabajamos por el diálogo, la verdad y la minería con dignidad para nuestras comunidades.
+    </div>
+
+    <div class="footer">
+      <div class="footer-top">CONECTA CON NOSOTROS</div>
+
+      <div class="social-row">
+        <!-- Son visuales; los enlaces solo funcionan si se abre la página en un navegador, no en la transmisión -->
+        <a href="https://web.facebook.com/people/Voces-del-carb%C3%B3n/61579789811192/" target="_blank" class="social-icon facebook">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a href="https://www.instagram.com/vocesdelcarbon" target="_blank" class="social-icon instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://x.com/Vocesdelcarbon" target="_blank" class="social-icon x">
+          <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://vocesdelcarbon.org" target="_blank" class="social-icon web">
+          <i class="fas fa-globe"></i>
+        </a>
+      </div>
+
+      <div class="hashtags">
+        <div class="tag">#VocesDelCarbón</div>
+        <div class="tag">#MineríaConDignidad</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tiempo inicial (segundos) – aquí pones la duración del conteo
+  let totalSeconds = 5 * 60; // 5 minutos
+
+  function updateTimer(){
+    const timerEl = document.getElementById('timer');
+    const labelEl = document.querySelector('.timer-label');
+    const layout = document.getElementById('layout');
+
+    let min = Math.floor(totalSeconds / 60);
+    let sec = totalSeconds % 60;
+
+    timerEl.textContent =
+      String(min).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+
+    // Último minuto: encendemos modo emoción
+    if(totalSeconds <= 60){
+      layout.classList.add('last-minute');
+      labelEl.textContent = '¡Estamos a punto de comenzar la transmisión!';
+    }
+
+    if(totalSeconds > 0){
+      totalSeconds--;
+      setTimeout(updateTimer, 1000);
+    }else{
+      timerEl.textContent = '00:00';
+      labelEl.textContent = '¡Estamos EN VIVO!';
+    }
+  }
+
+  updateTimer();
+</script>
+
+</body>
+</html>
