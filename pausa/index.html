@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Pausa · Voces del Carbón</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Íconos -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <!-- Tipografía -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap"
+        rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at top, #ffcc00 0%, #0a5f36 45%, #021f13 100%);
+      color: #fff;
+      overflow: hidden;
+    }
+
+    /* Fondo decorativo */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .22;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .blob.one {
+      width: 380px;
+      height: 380px;
+      background: #ffdd55;
+      top: -80px;
+      left: -40px;
+      animation: blobMove1 20s infinite alternate ease-in-out;
+    }
+    .blob.two {
+      width: 420px;
+      height: 420px;
+      background: #00e676;
+      bottom: -120px;
+      right: -40px;
+      animation: blobMove2 22s infinite alternate ease-in-out;
+    }
+
+    @keyframes blobMove1 {
+      0%   { transform: translate3d(0,0,0) scale(1); }
+      100% { transform: translate3d(120px,80px,0) scale(1.1); }
+    }
+    @keyframes blobMove2 {
+      0%   { transform: translate3d(0,0,0) scale(1.1); }
+      100% { transform: translate3d(-120px,-60px,0) scale(1); }
+    }
+
+    /* Tarjeta principal */
+    .panel {
+      position: relative;
+      z-index: 1;
+      width: 88%;
+      max-width: 1200px;
+      padding: 55px 60px 45px;
+      border-radius: 40px;
+      background: linear-gradient(160deg, #144a2a, #052417);
+      box-shadow:
+        0 0 120px rgba(0,0,0,.75),
+        0 0 0 1px rgba(255,255,255,.06);
+      text-align: center;
+    }
+
+    /* Logo */
+    .logo-wrap {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffcc00 5%, #0b5a34 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 40px rgba(255,204,0,.8);
+      animation: logoPulse 3s ease-in-out infinite;
+    }
+    .logo-wrap img {
+      width: 90%;
+      border-radius: 50%;
+    }
+    @keyframes logoPulse {
+      0%   { transform: scale(1);   box-shadow: 0 0 30px rgba(255,204,0,.6); }
+      50%  { transform: scale(1.09); box-shadow: 0 0 70px rgba(255,220,0,1); }
+      100% { transform: scale(1);   box-shadow: 0 0 30px rgba(255,204,0,.6); }
+    }
+
+    .sub {
+      font-size: 12px;
+      letter-spacing: 4px;
+      opacity: .85;
+      margin-top: 4px;
+    }
+
+    .title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffcc00;
+      letter-spacing: 1.5px;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .tagline {
+      margin-top: 16px;
+      font-size: 14px;
+      opacity: .9;
+    }
+
+    /* Mensaje de pausa */
+    .pause-box {
+      margin: 40px auto 26px;
+      padding: 26px 28px 30px;
+      max-width: 760px;
+      border-radius: 26px;
+      background: radial-gradient(circle at top, #0fb15a 0%, #07522e 55%, #042319 100%);
+      box-shadow:
+        0 20px 40px rgba(0,0,0,.6),
+        inset 0 0 25px rgba(0,0,0,.45);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pause-label {
+      font-size: 15px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: .8;
+    }
+
+    .pause-main {
+      font-size: 30px;
+      font-weight: 900;
+      margin-top: 10px;
+      color: #ffffff;
+    }
+
+    .pause-sub {
+      margin-top: 10px;
+      font-size: 14px;
+      opacity: .9;
+    }
+
+    /* Pequeño “monitor de señal” */
+    .signal {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 6px;
+      margin-top: 22px;
+    }
+
+    .bar {
+      width: 6px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.32);
+      animation: bars 1.1s infinite ease-in-out;
+    }
+    .bar:nth-child(1) { height: 14px; animation-delay: 0s;    }
+    .bar:nth-child(2) { height: 22px; animation-delay: .12s; }
+    .bar:nth-child(3) { height: 32px; animation-delay: .24s; }
+    .bar:nth-child(4) { height: 22px; animation-delay: .36s; }
+    .bar:nth-child(5) { height: 14px; animation-delay: .48s; }
+
+    @keyframes bars {
+      0%,100% { transform: scaleY(.8); opacity: .6; }
+      50%     { transform: scaleY(1.5); opacity: 1; }
+    }
+
+    /* Timeline del evento */
+    .timeline {
+      margin: 10px auto 0;
+      max-width: 780px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,.7);
+    }
+
+    .step {
+      flex: 1;
+      position: relative;
+      padding-top: 18px;
+    }
+
+    .step::before {
+      content: '';
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,.4);
+      background: rgba(5,30,18,.8);
+    }
+
+    .step-line {
+      position: absolute;
+      top: 14px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(to right, rgba(255,255,255,.3), rgba(255,255,255,.05));
+      z-index: -1;
+    }
+
+    .step.active {
+      color: #ffeb3b;
+      font-weight: 700;
+    }
+    .step.active::before {
+      background: #ffcc00;
+      border-color: #ffcc00;
+      box-shadow: 0 0 18px rgba(255,204,0,.9);
+    }
+
+    .step.done {
+      color: rgba(255,255,255,.85);
+    }
+    .step.done::before {
+      background: #00c853;
+      border-color: #00c853;
+    }
+
+    /* Franja inferior */
+    .bottom-text {
+      margin-top: 26px;
+      font-size: 13px;
+      opacity: .85;
+    }
+
+    .social-row {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      font-size: 13px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .social-icons i {
+      font-size: 22px;
+      margin: 0 3px;
+      padding: 10px;
+      border-radius: 50%;
+      background: #02140d;
+      box-shadow: 0 0 14px rgba(0,0,0,.7);
+    }
+
+    .social-icons .fa-facebook-f  { color: #1e88e5; }
+    .social-icons .fa-instagram   { color: #ff4081; }
+    .social-icons .fa-x-twitter   { color: #ffffff; }
+    .social-icons .fa-globe       { color: #ffeb3b; }
+
+    .tags {
+      margin-top: 12px;
+    }
+
+    .tag {
+      display: inline-block;
+      margin: 5px 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: #ffcc00;
+      color: #000;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      box-shadow: 0 0 18px rgba(0,0,0,.5);
+    }
+
+    @media (max-width: 900px) {
+      .panel {
+        padding: 40px 24px 32px;
+      }
+      .title {
+        font-size: 23px;
+      }
+      .pause-main {
+        font-size: 24px;
+      }
+      .timeline {
+        font-size: 9px;
+      }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+<div class="panel">
+
+  <!-- Logo -->
+  <div class="logo-wrap">
+    <img src="https://vocesdelcarbon.org/assets/logo.png" alt="Voces del Carbón">
+  </div>
+
+  <!-- Encabezado -->
+  <div class="sub">EN VIVO · VOCES DEL CARBÓN</div>
+  <div class="title">CONVERSATORIO ESPECIAL</div>
+  <div class="tagline">
+    Del carbón al futuro: avanzar sin traicionar lo que somos.
+  </div>
+
+  <!-- Caja de pausa -->
+  <div class="pause-box">
+    <div class="pause-label">TRANSMISIÓN EN PAUSA</div>
+    <div class="pause-main">💛 Estamos en una breve pausa</div>
+    <div class="pause-sub">
+      No te vayas. En pocos minutos continuaremos con el conversatorio
+      <b>“Transición o traición energética”</b>.
+    </div>
+
+    <!-- Barras de señal -->
+    <div class="signal">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <!-- Línea de etapas del evento -->
+    <div class="timeline">
+      <div class="step done">
+        <div class="step-line"></div>
+        Apertura
+      </div>
+      <div class="step active">
+        Pausa
+      </div>
+      <div class="step">
+        Panel &amp; preguntas
+      </div>
+    </div>
+  </div>
+
+  <!-- Información inferior -->
+  <div class="bottom-text">
+    Desde Voces del Carbón promovemos el diálogo, la verdad y una minería con dignidad
+    para nuestras comunidades.
+  </div>
+
+  <div class="social-row">
+    <span>Conecta con nosotros:</span>
+    <div class="social-icons">
+      <i class="fab fa-facebook-f"></i>
+      <i class="fab fa-instagram"></i>
+      <i class="fab fa-x-twitter"></i>
+      <i class="fas fa-globe"></i>
+    </div>
+  </div>
+
+  <div class="tags">
+    <span class="tag">#VocesDelCarbón</span>
+    <span class="tag">#MineríaConDignidad</span>
+  </div>
+
+</div>
+
+</body>
+</html>
