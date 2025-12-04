@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Voces del Carbón - En Vivo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Íconos profesionales -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- FUENTE ELEGANTE -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+
+* {
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at center, #ffcc00 5%, #0a5f36 80%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.panel {
+  width: 86%;
+  max-width: 1200px;
+  padding: 60px 50px 50px;
+  border-radius: 40px;
+  background: linear-gradient(160deg, #115c2e, #06301a);
+  box-shadow: 0 0 120px rgba(0,0,0,.55);
+  text-align: center;
+}
+
+/* ==== LOGO ==== */
+
+.logo-wrap {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 0 auto 25px;
+  overflow: hidden;
+  background: radial-gradient(circle, #ffcc00 10%, #0b5a34 75%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseLogo 3s ease-in-out infinite;
+  box-shadow: 0 0 55px rgba(255,204,0,.7);
+}
+
+.logo-wrap img {
+  width: 90%;
+  border-radius: 50%;
+}
+
+/* ==== TEXTO ==== */
+
+.sub {
+  font-size: 12px;
+  letter-spacing: 4px;
+  opacity: .8;
+}
+
+.title {
+  font-size: 33px;
+  font-weight: 900;
+  color: #ffc400;
+  margin: 12px 0;
+  letter-spacing: 2px;
+}
+
+.desc {
+  font-size: 14px;
+  opacity: .85;
+  margin-bottom: 40px;
+}
+
+/* ==== CONTADOR ==== */
+
+.timer-box {
+  background: linear-gradient(135deg, #008b44, #0a3922);
+  padding: 35px 80px;
+  border-radius: 28px;
+  display: inline-block;
+  box-shadow: inset 0 0 25px rgba(0,0,0,.45);
+  transition: 0.4s ease;
+}
+
+.timer {
+  font-size: 85px;
+  font-weight: 900;
+  letter-spacing: 5px;
+}
+
+.timer-label {
+  font-size: 13px;
+  margin-top: 10px;
+  opacity: .7;
+}
+
+/* ==== SOCIAL ==== */
+
+.footer {
+  margin-top: 30px;
+  font-size: 13px;
+  opacity: .8;
+}
+
+.social {
+  margin-top: 15px;
+}
+
+.social i {
+  font-size: 26px;
+  margin: 0 15px;
+  background: #111;
+  border-radius: 50%;
+  padding: 12px;
+  box-shadow: 0 0 12px rgba(0,0,0,.6);
+}
+
+.tags {
+  margin-top: 15px;
+}
+
+.tag {
+  background: #ffc400;
+  color: #000;
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 11px;
+  margin: 6px;
+  display: inline-block;
+  font-weight: 700;
+}
+
+/* ==== ÚLTIMO MINUTO ==== */
+
+.final-minute .timer-box {
+  background: linear-gradient(135deg, #cc0000, #600);
+  animation: pulseFinal 1s infinite;
+}
+
+/* ==== ANIMACIONES ==== */
+
+@keyframes pulseLogo {
+  0% { transform: scale(1); box-shadow: 0 0 30px rgba(255,204,0,.6); }
+  50% { transform: scale(1.12); box-shadow: 0 0 80px rgba(255,204,0,1); }
+  100% { transform: scale(1); box-shadow: 0 0 30px rgba(255,204,0,.6); }
+}
+
+@keyframes pulseFinal {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="panel" id="panel">
+
+  <div class="logo-wrap">
+    <img src="https://vocesdelcarbon.org/assets/logo.png" alt="Voces del Carbón">
+  </div>
+
+  <div class="sub">EN VIVO · VOCES DEL CARBÓN</div>
+
+  <div class="title">CONVERSATORIO ESPECIAL</div>
+
+  <div class="desc">
+    Ajusta tu audio, comparte el enlace y prepárate para el conversatorio  
+    <b>“Transición o traición energética”</b>
+  </div>
+
+  <div class="timer-box">
+    <div class="timer" id="timer">05:00</div>
+    <div class="timer-label">Iniciamos transmisión en vivo en</div>
+  </div>
+
+  <div class="footer">
+    Desde Voces del Carbón trabajamos por el diálogo, la verdad y la minería con dignidad.
+  </div>
+
+  <div class="social">
+    <i class="fab fa-facebook-f"></i>
+    <i class="fab fa-instagram"></i>
+    <i class="fab fa-x-twitter"></i>
+    <i class="fas fa-globe"></i>
+  </div>
+
+  <div class="tags">
+    <span class="tag">#VocesDelCarbón</span>
+    <span class="tag">#MineríaConDignidad</span>
+  </div>
+
+</div>
+
+<script>
+
+let total = 5 * 60;
+const timer = document.getElementById("timer");
+const panel = document.getElementById("panel");
+
+setInterval(() => {
+
+  const m = String(Math.floor(total / 60)).padStart(2,'0');
+  const s = String(total % 60).padStart(2,'0');
+  timer.innerText = `${m}:${s}`;
+
+  if(total <= 60){
+    panel.classList.add("final-minute");
+  }
+
+  if(total > 0){
+    total--;
+  }
+
+}, 1000);
+
+</script>
+
+</body>
+</html>
