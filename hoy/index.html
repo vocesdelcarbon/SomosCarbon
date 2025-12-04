@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Hoy es el evento · Voces del Carbón</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- TIPOGRAFÍA -->
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&display=swap" rel="stylesheet"/>
+
+<!-- ICONOS REDES -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<style>
+:root {
+  --verde1:#0b5a34;
+  --verde2:#022b1a;
+  --amarillo:#ffcc00;
+  --blanco:#ffffff;
+}
+
+body {
+  margin:0;
+  font-family:"Montserrat",sans-serif;
+  min-height:100vh;
+  background: radial-gradient(circle at top,#ffcc00 0%,#0b5a34 42%,#022b1a 85%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:white;
+  overflow:hidden;
+}
+
+/* 💫 FONDO DINÁMICO */
+.blob {
+  position:fixed;
+  border-radius:50%;
+  filter:blur(100px);
+  opacity:0.28;
+  z-index:0;
+}
+.blob.one {
+  width:420px;
+  height:420px;
+  background:#ffdd55;
+  top:-120px;
+  left:-40px;
+  animation: blob1 22s infinite alternate ease-in-out;
+}
+.blob.two {
+  width:380px;
+  height:380px;
+  background:#00e676;
+  right:-60px;
+  bottom:-80px;
+  animation: blob2 24s infinite alternate ease-in-out;
+}
+@keyframes blob1 {
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(120px,80px) scale(1.2);}
+}
+@keyframes blob2 {
+  0%{transform:translate(0,0) scale(1.2);}
+  100%{transform:translate(-120px,-80px) scale(1);}
+}
+
+/* 📦 CONTENEDOR */
+.panel {
+  position:relative;
+  z-index:1;
+  width:88%;
+  max-width:1200px;
+  background:linear-gradient(160deg,#0f4d2c,#052117);
+  border-radius:42px;
+  padding:55px;
+  box-shadow:0 0 120px rgba(0,0,0,0.75);
+  text-align:center;
+  display:grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap:30px;
+  align-items:center;
+}
+
+/* 🔵 BLOQUE TEXTO */
+.contenido {
+  text-align:center;
+}
+
+/* 🔵 LOGO */
+.logo-wrap {
+  width:140px;
+  height:140px;
+  margin:0 auto 14px;
+  border-radius:50%;
+  background:radial-gradient(circle,#ffcc00 12%,#0b5a34 70%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 0 50px rgba(255,204,0,0.9);
+  animation:pulse 3s infinite ease-in-out;
+  overflow:hidden;
+}
+.logo-wrap img {
+  width:88%;
+  border-radius:50%;
+}
+@keyframes pulse {
+  0%{transform:scale(1);}
+  50%{transform:scale(1.08);}
+  100%{transform:scale(1);}
+}
+
+/* 🟡 TÍTULOS */
+.hoy {
+  margin-top:10px;
+  font-size:40px;
+  font-weight:900;
+  color:var(--amarillo);
+  letter-spacing:3px;
+}
+.sub {
+  margin-top:6px;
+  font-size:16px;
+  opacity:.9;
+}
+.tema {
+  margin:22px auto 14px;
+  font-size:24px;
+  font-weight:800;
+}
+.frase {
+  font-size:15px;
+  line-height:1.6;
+  opacity:.95;
+}
+
+/* 🎯 LLAMADO */
+.call {
+  margin-top:24px;
+  background:rgba(0,0,0,.35);
+  padding:18px;
+  border-radius:20px;
+  box-shadow:inset 0 0 15px rgba(0,0,0,.6);
+}
+.call p {
+  margin:6px 0;
+}
+.call strong {color:#ffdd55;}
+
+/* 🌐 REDES */
+.social {
+  margin-top:26px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+.social span {
+  font-size:13px;
+  letter-spacing:1px;
+}
+.social i {
+  font-size:24px;
+  padding:10px;
+  border-radius:50%;
+  background:#03190f;
+  box-shadow:0 0 16px rgba(0,0,0,.7);
+  transition:.25s;
+}
+.social i.fa-facebook-f {color:#1877f2;}
+.social i.fa-instagram {color:#ff4081;}
+.social i.fa-x-twitter {color:#ffffff;}
+.social i.fa-globe {color:#ffcc00;}
+.social i:hover {
+  transform:scale(1.12);
+}
+
+/* #️⃣ HASHTAGS */
+.tags {
+  margin-top:22px;
+}
+.tag {
+  display:inline-block;
+  background:#ffcc00;
+  color:#000;
+  font-weight:800;
+  border-radius:999px;
+  padding:8px 20px;
+  margin:4px;
+}
+
+/* 🖼 TARJETA FLOTANTE EVENTO */
+.tarjeta-evento {
+  position:relative;
+  justify-self:center;
+  animation:flotar 5s ease-in-out infinite;
+}
+.tarjeta-evento img {
+  max-width:100%;
+  width:380px;
+  border-radius:22px;
+  box-shadow:0 20px 45px rgba(0,0,0,.7);
+  border:3px solid rgba(255,204,0,0.6);
+}
+
+/* Animación flotante */
+@keyframes flotar {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+  100% { transform: translateY(0px); }
+}
+
+/* 📱 RESPONSIVE */
+@media(max-width:900px){
+  .panel{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+  .tarjeta-evento img{
+    width:300px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="blob one"></div>
+<div class="blob two"></div>
+
+<div class="panel">
+
+<!-- TEXTO PRINCIPAL -->
+<div class="contenido">
+
+<div class="logo-wrap">
+  <img src="https://vocesdelcarbon.org/assets/logo.png" alt="Voces del Carbón"/>
+</div>
+
+<div class="hoy">HOY ES EL CONVERSATORIO</div>
+<div class="sub">Voces del Carbón · Evento en vivo</div>
+
+<div class="tema">¿TRANSICIÓN O TRAICIÓN ENERGÉTICA?</div>
+
+<div class="frase">
+Gracias por ser parte de este conversatorio.<br>
+Hoy abrimos la palabra al pueblo, al territorio y a la dignidad minera.
+</div>
+
+<div class="call">
+<p><strong>🔔 Activa la campana</strong> en YouTube</p>
+<p><strong>📢 Comparte</strong> esta transmisión</p>
+<p><strong>👥 Invita</strong> a más voces</p>
+<p><strong>🔴 En vivo HOY</strong></p>
+</div>
+
+<div class="social">
+<span>SÍGUENOS:</span>
+<i class="fab fa-facebook-f"></i>
+<i class="fab fa-instagram"></i>
+<i class="fab fa-x-twitter"></i>
+<i class="fas fa-globe"></i>
+</div>
+
+<div class="tags">
+<span class="tag">#VocesDelCarbón</span>
+<span class="tag">#MineríaConDignidad</span>
+</div>
+
+</div>
+
+<!-- TARJETA DEL EVENTO -->
+<div class="tarjeta-evento">
+  <img src="conversatorio.png" alt="Afiche oficial del conversatorio">
+</div>
+
+</div>
+
+</body>
+</html>
